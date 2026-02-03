@@ -1,0 +1,40 @@
+# ==========================================
+# Build System (Maven)
+# ==========================================
+target/
+# 下面这行是为了保留 Maven Wrapper (推荐保留，方便别人无需安装 Maven 也能运行)
+!.mvn/wrapper/maven-wrapper.jar
+# 忽略 Maven 依赖分析产生的临时文件
+dependency-reduced-pom.xml
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+# ==========================================
+# Eclipse (为了方便习惯用 Eclipse 的开发者)
+# ==========================================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+# ==========================================
+# Logs & Others (通用杂项)
+# ==========================================
+*.log
+*.tmp
+*.bak

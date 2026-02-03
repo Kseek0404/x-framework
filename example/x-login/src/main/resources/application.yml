@@ -1,0 +1,27 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: x-login
+
+# 节点配置：ACCOUNT 类型
+x:
+  cluster:
+    type: ACCOUNT
+    name: login-1
+    weight: 1
+    message-types: [1000]
+    message-pkgs:
+      - de.kseek.core.message
+      - de.kseek.game.common.message
+    tcp-address:
+      host: 127.0.0.1
+      port: 30001
+  zookeeper:
+    x-root: x-game
+    connects: 127.0.0.1:2181
+    base-sleep-time-ms: 1000
+    max-retries: 3
+    session-timeout-ms: 10000
+    connection-timeout-ms: 3000

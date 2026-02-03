@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.kseek</groupId>
+        <artifactId>x-framework-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <packaging>pom</packaging>
+    <artifactId>x-example</artifactId>
+    <name>x-example</name>
+    <description>游戏示例项目：Login、Gate、Hall 等独立可运行模块</description>
+
+    <properties>
+        <framework.version>${project.parent.version}</framework.version>
+    </properties>
+
+    <modules>
+        <module>x-game-common</module>
+        <module>x-login</module>
+        <module>x-gate</module>
+        <module>x-hall</module>
+    </modules>
+</project>

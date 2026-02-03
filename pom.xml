@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.kseek</groupId>
+    <artifactId>x-framework-parent</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <!-- example 为演示示例，不参与父项目 compile/install/package；需查看或运行示例时在 IDEA 中单独添加 example/pom.xml 为 Maven 项目 -->
+    <modules>
+        <module>x-core</module>
+        <module>x-java2pb</module>
+        <module>x-framework</module>
+    </modules>
+
+    <name>x-framework-parent</name>
+    <description>游戏框架</description>
+    <!-- 继承父包 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.13</version>
+    </parent>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+        <lombok.version>1.18.24</lombok.version>
+        <hutool.version>5.8.25</hutool.version>
+        <org.apache.curator.version>5.5.0</org.apache.curator.version>
+        <!-- 统一版本，子模块用 ${xxx.version} 引用 -->
+        <commons-io.version>2.11.0</commons-io.version>
+        <netty.version>4.1.94.Final</netty.version>
+        <protostuff.version>1.8.0</protostuff.version>
+        <protobuf.version>3.21.9</protobuf.version>
+        <objenesis.version>3.2</objenesis.version>
+        <cglib.version>3.3.0</cglib.version>
+        <reflectasm.version>1.11.9</reflectasm.version>
+        <fastjson2.version>2.0.49</fastjson2.version>
+        <javassist.version>3.30.2-GA</javassist.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
