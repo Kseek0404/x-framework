@@ -1,4 +1,4 @@
-package de.kseek.game.common.message;
+package de.kseek.login.message;
 
 import de.kseek.core.protostuff.ProtobufMessage;
 import de.kseek.game.common.GameMessageConst;

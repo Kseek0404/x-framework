@@ -21,6 +21,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
             <groupId>de.kseek</groupId>
             <artifactId>x-core</artifactId>
             <version>${framework.version}</version>

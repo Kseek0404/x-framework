@@ -14,7 +14,7 @@ x:
     message-types: [2000]
     message-pkgs:
       - de.kseek.core.message
-      - de.kseek.game.common.message
+      - de.kseek.hall.message
     tcp-address:
       host: 127.0.0.1
       port: 30003

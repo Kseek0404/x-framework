@@ -14,7 +14,6 @@ x:
     use-gate: true
     message-pkgs:
       - de.kseek.core.message
-      - de.kseek.game.common.message
     tcp-address:
       host: 127.0.0.1
       port: 30002

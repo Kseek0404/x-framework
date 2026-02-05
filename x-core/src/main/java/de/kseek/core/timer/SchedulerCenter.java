@@ -9,10 +9,6 @@ import java.util.Date;
 
 /**
  * 程序调度管理器，用于各种定时任务，循环任务等
- *
- * @author Mingwei.Yang
- * @version 1.0
- * @All rights reserved.
  * <p>
  * <p>
  * <pre>
@@ -173,7 +169,7 @@ public class SchedulerCenter {
         schedulerFactory = new StdSchedulerFactory(configFile);
     }
 
-    public void addJob(SchedulerEvent schedulerEvent)
+    public void addJob(SchedulerEvent<?> schedulerEvent)
             throws Exception {
         String cronExpression = schedulerEvent.getCronExpression();
         JobDetail job = JobBuilder.newJob(JobDemo.class).build();
@@ -193,7 +189,7 @@ public class SchedulerCenter {
         }
     }
 
-    public void removeJobs(SchedulerEvent schedulerEvent) {
+    public void removeJobs(SchedulerEvent<?> schedulerEvent) {
         try {
             Scheduler scheduler = schedulerFactory.getScheduler();
             scheduler.deleteJob(schedulerEvent.getJobKey());
@@ -207,11 +203,11 @@ public class SchedulerCenter {
         public void execute(JobExecutionContext jobExecutionContext)
                 throws JobExecutionException {
             JobDetail jobDetail = jobExecutionContext.getJobDetail();
-            SchedulerEvent event = (SchedulerEvent) jobDetail.getJobDataMap().get(SchedulerEvent.class.getSimpleName());
+            SchedulerEvent<?> event = (SchedulerEvent<?>) jobDetail.getJobDataMap().get(SchedulerEvent.class.getSimpleName());
             event.execute(jobExecutionContext);
-            if (jobExecutionContext.getNextFireTime()==null){
-                event.nextTime=-1;
-            }else {
+            if (jobExecutionContext.getNextFireTime() == null) {
+                event.nextTime = -1;
+            } else {
                 event.nextTime = jobExecutionContext.getNextFireTime().getTime();
             }
         }

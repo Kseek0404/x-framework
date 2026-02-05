@@ -1,9 +1,15 @@
 server:
   port: 0
+  servlet:
+    context-path: /api
 
 spring:
   application:
     name: x-login
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/x-login
+      # 无本地 MongoDB 时可改为远程或注释后使用内存/测试配置
 
 # 节点配置：ACCOUNT 类型
 x:
@@ -14,7 +20,7 @@ x:
     message-types: [1000]
     message-pkgs:
       - de.kseek.core.message
-      - de.kseek.game.common.message
+      - de.kseek.login.message
     tcp-address:
       host: 127.0.0.1
       port: 30001

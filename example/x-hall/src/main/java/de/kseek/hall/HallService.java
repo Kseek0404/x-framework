@@ -5,7 +5,7 @@ import de.kseek.core.protostuff.Command;
 import de.kseek.core.protostuff.MessageType;
 import de.kseek.core.protostuff.PFSession;
 import de.kseek.game.common.GameMessageConst;
-import de.kseek.game.common.message.*;
+import de.kseek.hall.message.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
