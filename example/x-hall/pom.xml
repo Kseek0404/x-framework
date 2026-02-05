@@ -17,10 +17,6 @@
     <dependencies>
         <!-- x-core 的 actuator 排除了 jackson-databind，示例运行 Actuator 需补回 -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
             <groupId>de.kseek</groupId>
             <artifactId>x-core</artifactId>
             <version>${framework.version}</version>

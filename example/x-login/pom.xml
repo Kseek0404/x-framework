@@ -15,10 +15,10 @@
     <description>登录服务 - 独立可运行</description>
 
     <dependencies>
-        <!-- x-core 的 actuator 排除了 jackson-databind，示例运行 Actuator 需补回 -->
+        <!-- Spring Web：提供 @RestController、@RequestMapping 等 -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>de.kseek</groupId>
