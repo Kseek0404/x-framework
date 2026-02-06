@@ -40,7 +40,7 @@
 
 ```
 x-framework/
-├── pom.xml                 # 父 POM，统一版本与依赖
+├── pom.xml                 # 父 POM，统一版本与依赖（不含 example 模块）
 ├── x-core/                 # 核心库：集群、网关、消息、Curator 等
 │   └── src/main/java/de/kseek/core/
 │       ├── cluster/        # 集群连接、消息编解码与分发
@@ -56,8 +56,14 @@ x-framework/
 │       ├── ws/             # WebSocket 处理与 WSS
 │       └── ...
 ├── x-java2pb/              # Java 转 Protobuf 等代码生成工具
-└── x-framework/            # 应用入口模块，依赖 x-core、x-java2pb
-    └── src/main/java/de/kseek/Main.java
+├── x-framework/            # 框架占位入口，依赖 x-core、x-java2pb
+│   └── src/main/java/de/kseek/Main.java
+└── example/                # 示例工程（不参与父项目 compile/install，需单独打开）
+    ├── pom.xml             # 示例父 POM (x-example)
+    ├── x-game-common/      # 游戏公共：消息常量、节点管理等
+    ├── x-login/            # 登录服务 - 独立可运行
+    ├── x-gate/             # 网关服务 - 独立可运行
+    └── x-hall/             # 大厅服务 - 独立可运行
 ```
 
 ---
@@ -95,6 +101,8 @@ cd x-framework
 
 ### 3. 运行示例
 
+**方式一：运行框架占位入口（x-framework 模块）**
+
 ```bash
 cd x-framework
 ./mvnw spring-boot:run
@@ -102,7 +110,24 @@ cd x-framework
 
 Windows 下使用：`mvnw.cmd spring-boot:run`
 
-当前 `x-framework` 模块的 `Main` 为占位入口，实际使用时需在业务模块中引入 `x-core`，配置网关、集群与 Zookeeper 等，并实现 `ClusterService`、会话监听与 Protostuff 消息处理。
+**方式二：运行示例工程（example）**
+
+示例工程（`example/`）为独立演示项目，包含登录、网关、大厅等可运行服务，**不参与根目录的 `mvn install`**。需要先编译并安装核心库，再在示例目录下编译运行：
+
+```bash
+# 1. 在项目根目录安装核心库
+./mvnw clean install -DskipTests
+
+# 2. 进入示例目录并编译
+cd example
+../mvnw clean install -DskipTests
+
+# 3. 按需运行某一服务（如登录服务）
+cd x-login
+../mvnw spring-boot:run
+```
+
+在 IDEA 中可单独将 `example/pom.xml` 添加为 Maven 项目，便于直接运行各示例模块（如 `LoginApplication`、`GateApplication`、`HallApplication`）。
 
 ### 4. 作为依赖使用
 
@@ -115,6 +140,21 @@ Windows 下使用：`mvnw.cmd spring-boot:run`
     <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
+
+---
+
+## 示例工程 (example)
+
+`example/` 目录下为基于 x-core 的完整示例，演示网关、登录、大厅等服务的搭建方式，各模块可独立启动：
+
+| 模块            | 说明 |
+|-----------------|------|
+| **x-game-common** | 游戏公共层：消息常量（`GameMessageConst`）、节点管理（`GameNodeManager`）等，供其他示例模块依赖 |
+| **x-login**      | 登录服务：账号登录、Protostuff 消息处理（`LoginController`）、会话验证等 |
+| **x-gate**       | 网关服务：TCP/WebSocket 网关、会话验证监听（`GateSessionVerifyListener`）、客户端连接入口 |
+| **x-hall**       | 大厅服务：进入大厅、大厅列表等业务消息（`HallService`、`ReqEnterHall`、`RespHallList` 等） |
+
+运行前请确保已执行根目录的 `mvn install`，以便 example 能解析到 `x-core` 依赖；若使用 Zookeeper/集群功能，需先启动 Zookeeper 并配置好各模块的 `application.yml`。
 
 ---
 

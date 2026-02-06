@@ -40,7 +40,7 @@ A **game / distributed service framework** built on Spring Boot and Netty. It pr
 
 ```
 x-framework/
-├── pom.xml                 # Parent POM
+├── pom.xml                 # Parent POM (does not include example modules)
 ├── x-core/                 # Core: cluster, gate, messaging, Curator, etc.
 │   └── src/main/java/de/kseek/core/
 │       ├── cluster/        # Cluster connection, codec, dispatcher
@@ -56,8 +56,14 @@ x-framework/
 │       ├── ws/             # WebSocket and WSS handlers
 │       └── ...
 ├── x-java2pb/              # Java-to-Protobuf code generation
-└── x-framework/            # Application entry, depends on x-core, x-java2pb
-    └── src/main/java/de/kseek/Main.java
+├── x-framework/            # Placeholder entry, depends on x-core, x-java2pb
+│   └── src/main/java/de/kseek/Main.java
+└── example/                # Example project (not part of root build; open separately)
+    ├── pom.xml             # Example parent POM (x-example)
+    ├── x-game-common/      # Shared: message constants, node manager, etc.
+    ├── x-login/            # Login service — runnable standalone
+    ├── x-gate/             # Gate service — runnable standalone
+    └── x-hall/             # Hall service — runnable standalone
 ```
 
 ---
@@ -95,6 +101,8 @@ If Maven is already installed: `mvn clean install -DskipTests`
 
 ### 3. Run sample
 
+**Option A: Run the placeholder entry (x-framework module)**
+
 ```bash
 cd x-framework
 ./mvnw spring-boot:run
@@ -102,7 +110,24 @@ cd x-framework
 
 On Windows use: `mvnw.cmd spring-boot:run`
 
-The `x-framework` module’s `Main` is a placeholder. In real use, add `x-core` to your application, configure gate, cluster, and Zookeeper, and implement `ClusterService`, session listeners, and Protostuff message handlers.
+**Option B: Run the example project (example/)**
+
+The `example/` directory is a separate demo (login, gate, hall, etc.) and is **not** built by the root `mvn install`. Build and install the core first, then build and run from the example directory:
+
+```bash
+# 1. Install core from repo root
+./mvnw clean install -DskipTests
+
+# 2. Build example
+cd example
+../mvnw clean install -DskipTests
+
+# 3. Run a service (e.g. login)
+cd x-login
+../mvnw spring-boot:run
+```
+
+In IDEA you can add `example/pom.xml` as a Maven project to run each module (e.g. `LoginApplication`, `GateApplication`, `HallApplication`) directly.
 
 ### 4. Use as dependency
 
@@ -113,6 +138,21 @@ The `x-framework` module’s `Main` is a placeholder. In real use, add `x-core` 
     <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
+
+---
+
+## Example project (example)
+
+The `example/` directory contains runnable demos built on x-core:
+
+| Module         | Description |
+|----------------|-------------|
+| **x-game-common** | Shared layer: message constants (`GameMessageConst`), node manager (`GameNodeManager`), used by other example modules |
+| **x-login**    | Login service: account login, Protostuff handlers (`LoginController`), session verification |
+| **x-gate**     | Gate service: TCP/WebSocket gate, session verify listener (`GateSessionVerifyListener`), client connection entry |
+| **x-hall**     | Hall service: enter hall, hall list, and related messages (`HallService`, `ReqEnterHall`, `RespHallList`, etc.) |
+
+Ensure `mvn install` has been run at the repo root so example can resolve `x-core`. If using Zookeeper/cluster, start Zookeeper and configure each module’s `application.yml`.
 
 ---
 
