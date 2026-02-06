@@ -1,5 +1,7 @@
 package de.kseek.core.protostuff;
 
+import de.kseek.core.netty.codec.PFMessageDecoder;
+import de.kseek.core.netty.codec.PFMessageEncoder;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

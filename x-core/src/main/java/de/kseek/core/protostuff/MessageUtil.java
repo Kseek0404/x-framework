@@ -80,18 +80,18 @@ public class MessageUtil {
         return messageControllers;
     }
 
-    public static Map<Integer, MethodInfo> load(MethodAccess methodAccess, Class<?> clazz) {
+    public static Map<Integer, MethodInfo<?>> load(MethodAccess methodAccess, Class<?> clazz) {
         Method[] methods = clazz.getMethods();
-        Map<Integer, MethodInfo> methodInfos = new HashMap<>();
+        Map<Integer, MethodInfo<?>> methodInfos = new HashMap<>();
         for (Method method : methods) {
             Class<Command> clz = Command.class;
             Command command = method.getAnnotation(clz);
             if (command != null) {
                 String name = method.getName();
-                Class[] types = method.getParameterTypes();
+                Class<?>[] types = method.getParameterTypes();
                 Type returnType = method.getReturnType();
                 int index = methodAccess.getIndex(name, types);
-                MethodInfo methodInfo = new MethodInfo(index, name, types, returnType);
+                MethodInfo<?> methodInfo = new MethodInfo<>(index, name, types, returnType);
                 methodInfos.put(command.value(), methodInfo);
             }
 

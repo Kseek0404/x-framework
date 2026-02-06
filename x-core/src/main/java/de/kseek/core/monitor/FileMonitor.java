@@ -24,9 +24,9 @@ import java.util.Map;
 @Slf4j
 public class FileMonitor extends FileAlterationListenerAdaptor implements ApplicationRunner, ApplicationListener<ContextRefreshedEvent> {
 
-    private FileAlterationMonitor monitor = new FileAlterationMonitor();
+    private final FileAlterationMonitor monitor = new FileAlterationMonitor();
 
-    private Map<String, FileLoader> fileLoaders = new HashMap<>();
+    private final Map<String, FileLoader> fileLoaders = new HashMap<>();
 
     public Map<String, FileAlterationObserver> fileObserver = new HashMap<>();
 
@@ -60,7 +60,7 @@ public class FileMonitor extends FileAlterationListenerAdaptor implements Applic
         }
         String[] fn = fileName.split("/");
         if (fn.length != 2) {
-            log.warn("添加文件监听错误，参数不能为空，file=" + fileName);
+            log.warn("添加文件监听错误，参数不能为空，file={}", fileName);
             return;
         }
         String dirName = fn[0];
@@ -167,7 +167,7 @@ public class FileMonitor extends FileAlterationListenerAdaptor implements Applic
         Map<String, FileChangeListener> maps = event.getApplicationContext().getBeansOfType(FileChangeListener.class);
         if (!maps.isEmpty()) {
             maps.values().forEach(f -> {
-                log.info(f.getFileName() + "->" + f.getClass());
+                log.info("{}->{}", f.getFileName(), f.getClass());
                 List<FileChangeListener> list = fileChangeListenerMap.computeIfAbsent(f.getFileName(), k -> new ArrayList<>());
                 list.add(f);
             });

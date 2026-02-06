@@ -12,7 +12,7 @@ import java.util.Map;
 public class MessageController {
     public Object been;
     public MethodAccess methodAccess;
-    public Map<Integer, MethodInfo> MethodInfos;
+    public Map<Integer, MethodInfo<?>> MethodInfos;
 
     public MessageController(Object been) {
         this.been = been;

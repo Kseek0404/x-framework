@@ -98,7 +98,7 @@ public class ClusterMessageDispatcher implements ApplicationListener<ContextRefr
             MessageController messageController = messageControllers.get(messageType);
             Object response = null;
             if (messageController != null) {
-                MethodInfo methodInfo = messageController.MethodInfos.get(command);
+                MethodInfo<?> methodInfo = messageController.MethodInfos.get(command);
                 if (methodInfo == null) {
                     log.warn("找不到处理函数,messageType={},cmd={}", messageType, command);
                     return;
