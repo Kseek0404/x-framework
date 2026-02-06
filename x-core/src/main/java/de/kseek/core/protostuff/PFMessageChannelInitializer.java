@@ -19,9 +19,9 @@ public class PFMessageChannelInitializer
 
     private static final int HANDER_SIZE = 4;
 
-    private ChannelHandler messageDispatcher;
+    private final ChannelHandler messageDispatcher;
 
-    private NioEventLoopGroup workGroup = new NioEventLoopGroup();
+    private final NioEventLoopGroup workGroup = new NioEventLoopGroup();
 
     public PFMessageChannelInitializer(ChannelHandler messageDispatcher) {
         super();

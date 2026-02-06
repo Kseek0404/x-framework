@@ -21,8 +21,7 @@ public class PFMessageManager {
             return null;
         }
         byte[] data = ProtostuffUtil.serialize(msg);
-        PFMessage pfMessage = new PFMessage(responseMessage.messageType(), responseMessage.cmd(), data);
-        return pfMessage;
+        return new PFMessage(responseMessage.messageType(), responseMessage.cmd(), data);
     }
 
 }

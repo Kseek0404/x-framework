@@ -96,10 +96,10 @@ public class GateSession extends NettyConnect implements ConnectListener, Inbox<
             close();
             return;
         }
-        // 拦截ping消息
-        if (msg.messageType == 1 && msg.cmd == 1) {
+        // 拦截心跳 Ping，直接回 Pong
+        if (msg.messageType == MessageConst.HeartbeatConst.TYPE && msg.cmd == MessageConst.HeartbeatConst.CMD_PING) {
             activeTime = System.currentTimeMillis();
-            PFMessage pfMessage = new PFMessage(1, 2, ProtostuffUtil.serialize(new PingMessageHandler.Pong(activeTime)));
+            PFMessage pfMessage = new PFMessage(MessageConst.HeartbeatConst.TYPE, MessageConst.HeartbeatConst.CMD_PONG, ProtostuffUtil.serialize(new PingMessageHandler.Pong(activeTime)));
             pfMessage.setMsgId(msg.msgId);
             write(pfMessage);
             return;

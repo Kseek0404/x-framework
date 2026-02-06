@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
+import de.kseek.core.constant.MessageConst;
 import de.kseek.core.message.ClusterRegisterMsg;
 import de.kseek.core.netty.NettyConnect;
 import de.kseek.core.protostuff.MessageUtil;
@@ -57,7 +58,7 @@ public class ClusterConnect extends NettyConnect {
     @Override
     public void messageReceived(Object obj) {
         ClusterMessage msg = (ClusterMessage)obj;
-        if (msg.msg.messageType == 1 && msg.msg.cmd == 2) {
+        if (msg.msg.messageType == MessageConst.HeartbeatConst.TYPE && msg.msg.cmd == MessageConst.HeartbeatConst.CMD_PONG) {
             //log.debug("收到心跳回包消息,ctx={}" + ctx);
         } else {
             clusterMessageDispatcher.onClusterReceive(this, msg);

@@ -2,6 +2,7 @@ package de.kseek.core.cluster;
 
 import de.kseek.core.protostuff.*;
 import io.netty.channel.ChannelHandler;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
@@ -27,6 +28,14 @@ public class ClusterMessageDispatcher implements ApplicationListener<ContextRefr
 
     private Map<Integer, MessageController> messageControllers;
 
+    /**
+     * -- SETTER --
+     *  设置 ClusterSystem 实例
+     *  用于避免循环依赖，通过 setter 注入而不是构造函数注入
+     *
+     * @param clusterSystem ClusterSystem 实例
+     */
+    @Setter
     private ClusterSystem clusterSystem;
     
     @Autowired(required = false)
@@ -37,27 +46,14 @@ public class ClusterMessageDispatcher implements ApplicationListener<ContextRefr
 
     /**
      * 扫描处理器包
-     */
-    private String[] pkgs;
-
-    /**
-     * 设置扫描处理器包
-     * 
+     * -- SETTER --
+     *  设置扫描处理器包
+     *
      * @param pkgs 包名数组
-     */
-    public void setPkgs(String[] pkgs) {
-        this.pkgs = pkgs;
-    }
 
-    /**
-     * 设置 ClusterSystem 实例
-     * 用于避免循环依赖，通过 setter 注入而不是构造函数注入
-     * 
-     * @param clusterSystem ClusterSystem 实例
      */
-    public void setClusterSystem(ClusterSystem clusterSystem) {
-        this.clusterSystem = clusterSystem;
-    }
+    @Setter
+    private String[] pkgs;
 
     public PFSession getPFSession(String id) {
         return clusterSystem.sessionMap().get(id);

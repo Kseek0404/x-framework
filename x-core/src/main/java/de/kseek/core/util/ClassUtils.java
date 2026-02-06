@@ -175,10 +175,8 @@ public class ClassUtils {
                     // 获取包的物理路径
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     // 以文件的方式扫描整个包下的文件 并添加到集合中
-//                    if (!packageName.contains("org.alan.gen")) {
                     findAndAddClassesInPackageByFile(packageName, filePath,
                             recursive, classes);
-//                    }
                 } else if ("jar".equals(protocol)) {
                     // 如果是jar包文件
                     // 定义一个JarFile
@@ -258,9 +256,6 @@ public class ClassUtils {
                                                         String packagePath, final boolean recursive,
                                                         Set<Class<?>> classes) {
         // 获取此包的目录 建立一个File
-//        if (packageName.contains("org.alan.gen")){
-//            System.out.println(packageName);
-//        }
         File dir = new File(packagePath);
         // 如果不存在或者 也不是目录就直接返回
         if (!dir.exists() || !dir.isDirectory()) {

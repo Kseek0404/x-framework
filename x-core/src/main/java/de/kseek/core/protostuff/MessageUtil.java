@@ -8,10 +8,13 @@ import de.kseek.core.util.ClassUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author kseek
@@ -96,7 +99,42 @@ public class MessageUtil {
         return methodInfos;
     }
 
+    /**
+     * 校验全工程内 (messageType, cmd) 唯一，防止多模块重复导致路由错误。
+     * 对已声明 messageType/cmd 的 {@link ProtobufMessage} 做一次扫描，重复则抛异常。
+     */
+    public static void validateMessageTypeCmdUnique(String... pkgs) {
+        if (pkgs == null || pkgs.length == 0) return;
+        Set<Class<?>> clazzSet = new HashSet<>();
+        for (String pkg : pkgs) {
+            clazzSet.addAll(ClassUtils.getAllClassByAnnotation(pkg, ProtobufMessage.class));
+        }
+        Map<String, List<Class<?>>> keyToClasses = new HashMap<>();
+        for (Class<?> clazz : clazzSet) {
+            ProtobufMessage ann = clazz.getAnnotation(ProtobufMessage.class);
+            if (ann == null) continue;
+            int type = ann.messageType();
+            int cmd = ann.cmd();
+            if (type == 0 && cmd == 0) continue;
+            String key = type + "_" + cmd;
+            keyToClasses.computeIfAbsent(key, k -> new ArrayList<>()).add(clazz);
+        }
+        List<String> duplicates = keyToClasses.entrySet().stream()
+                .filter(e -> e.getValue().size() > 1)
+                .map(e -> {
+                    String[] parts = e.getKey().split("_");
+                    String types = e.getValue().stream().map(Class::getName).collect(Collectors.joining(", "));
+                    return "messageType=" + parts[0] + ", cmd=" + parts[1] + " -> " + types;
+                })
+                .collect(Collectors.toList());
+        if (!duplicates.isEmpty()) {
+            throw new IllegalStateException(
+                    "消息号重复 (messageType, cmd) 必须全工程唯一，请检查各模块常量与 @ProtobufMessage。冲突: " + duplicates);
+        }
+    }
+
     public static Map<Class<?>, ProtobufMessage> loadResponseMessage(String... pkgs) {
+        validateMessageTypeCmdUnique(pkgs);
         responseMap = new HashMap<>();
         Set<Class<?>> clazzSet = new HashSet<>();
         for (String pkg : pkgs) {

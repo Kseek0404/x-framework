@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandler;
 import lombok.extern.slf4j.Slf4j;
 import de.kseek.core.cluster.ClusterMessage;
 import de.kseek.core.cluster.ClusterMessageDispatcher;
+import de.kseek.core.constant.MessageConst;
 import de.kseek.core.net.Connect;
 import de.kseek.core.protostuff.PFMessage;
 
@@ -27,7 +28,7 @@ public class GateClusterMessageDispatcher extends ClusterMessageDispatcher {
                 log.warn("找不到sessionId={}的session，无法转发消息", sessionId);
             }
         } else {
-            if (pfMessage != null && pfMessage.cmd == 2 && pfMessage.messageType == 1) {
+            if (pfMessage != null && pfMessage.messageType == MessageConst.HeartbeatConst.TYPE && pfMessage.cmd == MessageConst.HeartbeatConst.CMD_PONG) {
                 return;
             }
             super.handle(connect, null, pfMessage);
